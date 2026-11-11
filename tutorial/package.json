@@ -1,0 +1,22 @@
+{
+  "name": "backstory-tutorial",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The Backstory tutorial video and README stills, built with Remotion.",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts Tutorial out/tutorial.mp4",
+    "hero": "remotion still src/index.ts Hero ../media/hero.png"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.543",
+    "@remotion/google-fonts": "4.0.543",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "4.0.543"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "typescript": "^5.9.0"
+  }
+}
