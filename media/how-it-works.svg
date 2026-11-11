@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" width="1100" height="520" role="img" aria-label="How Backstory works: sources become signals, signals become decisions, decisions become ADR files, a timeline viewer and an MCP tool.">
+<rect width="1100" height="520" rx="16" fill="#12131A"/>
+<circle cx="43" cy="56" r="13" fill="#F2B34C"/><text x="43" y="61.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#12131A" text-anchor="middle">1</text><text x="66" y="63" font-family="Georgia, 'Times New Roman', serif" font-size="23" font-weight="700" fill="#F3EEE3" text-anchor="start">Sources</text>
+<rect x="30" y="96" width="210" height="83" rx="10" fill="#1B1D28" stroke="#2E3145" stroke-width="1.5"/>
+<text x="48" y="134.5" font-family="ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace" font-size="19" font-weight="600" fill="#F3EEE3" text-anchor="start">git log</text>
+<text x="48" y="157.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#A3A5B8" text-anchor="start">commits, diffs, renames</text>
+<rect x="30" y="195" width="210" height="83" rx="10" fill="#1B1D28" stroke="#2E3145" stroke-width="1.5"/>
+<text x="48" y="233.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="19" font-weight="600" fill="#F3EEE3" text-anchor="start">Pull requests</text>
+<text x="48" y="256.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#A3A5B8" text-anchor="start">descriptions via gh api</text>
+<rect x="30" y="294" width="210" height="83" rx="10" fill="#1B1D28" stroke="#2E3145" stroke-width="1.5"/>
+<text x="48" y="332.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="19" font-weight="600" fill="#F3EEE3" text-anchor="start">Issues</text>
+<text x="48" y="355.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#A3A5B8" text-anchor="start">linked from commits</text>
+<rect x="30" y="393" width="210" height="83" rx="10" fill="#1B1D28" stroke="#2E3145" stroke-width="1.5"/>
+<text x="48" y="431.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="19" font-weight="600" fill="#F3EEE3" text-anchor="start">Code comments</text>
+<text x="48" y="454.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#A3A5B8" text-anchor="start">traced with git blame</text>
+<circle cx="313" cy="56" r="13" fill="#F2B34C"/><text x="313" y="61.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#12131A" text-anchor="middle">2</text><text x="336" y="63" font-family="Georgia, 'Times New Roman', serif" font-size="23" font-weight="700" fill="#F3EEE3" text-anchor="start">Signals</text>
+<rect x="300" y="96" width="230" height="64.8" rx="10" fill="#1B1D28" stroke="#6FA8FF" stroke-width="1.5"/>
+<rect x="300" y="96" width="7" height="64.8" rx="3" fill="#6FA8FF"/>
+<text x="322" y="134.4" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#F3EEE3" text-anchor="start">Dependency swaps</text>
+<rect x="300" y="174.8" width="230" height="64.8" rx="10" fill="#1B1D28" stroke="#EF6F6C" stroke-width="1.5"/>
+<rect x="300" y="174.8" width="7" height="64.8" rx="3" fill="#EF6F6C"/>
+<text x="322" y="213.20000000000002" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#F3EEE3" text-anchor="start">Reverts</text>
+<rect x="300" y="253.6" width="230" height="64.8" rx="10" fill="#1B1D28" stroke="#A594FF" stroke-width="1.5"/>
+<rect x="300" y="253.6" width="7" height="64.8" rx="3" fill="#A594FF"/>
+<text x="322" y="292" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#F3EEE3" text-anchor="start">Large refactors</text>
+<rect x="300" y="332.4" width="230" height="64.8" rx="10" fill="#1B1D28" stroke="#8FD18A" stroke-width="1.5"/>
+<rect x="300" y="332.4" width="7" height="64.8" rx="3" fill="#8FD18A"/>
+<text x="322" y="370.79999999999995" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#F3EEE3" text-anchor="start">Config changes</text>
+<rect x="300" y="411.2" width="230" height="64.8" rx="10" fill="#1B1D28" stroke="#F2B34C" stroke-width="1.5"/>
+<rect x="300" y="411.2" width="7" height="64.8" rx="3" fill="#F2B34C"/>
+<text x="322" y="449.59999999999997" font-family="ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace" font-size="14" font-weight="600" fill="#F3EEE3" text-anchor="start">because / workaround / hack</text>
+<circle cx="603" cy="56" r="13" fill="#F2B34C"/><text x="603" y="61.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#12131A" text-anchor="middle">3</text><text x="626" y="63" font-family="Georgia, 'Times New Roman', serif" font-size="23" font-weight="700" fill="#F3EEE3" text-anchor="start">Decisions</text>
+<rect x="590" y="96" width="230" height="112" rx="10" fill="#1B1D28" stroke="#2E3145" stroke-width="1.5"/>
+<text x="608" y="130" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="19" font-weight="600" fill="#F3EEE3" text-anchor="start">Group</text>
+<text x="608" y="156" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#A3A5B8" text-anchor="start">Linked commits become</text>
+<text x="608" y="177" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#A3A5B8" text-anchor="start">one decision candidate</text>
+<path d="M 705 208 V 230" stroke="#F2B34C" stroke-width="2.5"/>
+<path d="M 698 228 L 705 239 L 712 228 Z" fill="#F2B34C"/>
+<rect x="590" y="242" width="230" height="234" rx="10" fill="#232636" stroke="#F2B34C" stroke-width="1.5"/>
+<text x="608" y="274" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#F3EEE3" text-anchor="start">Claude writes the ADR</text>
+<circle cx="614" cy="299" r="3.5" fill="#F2B34C"/>
+<text x="628" y="304" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" font-weight="400" fill="#F3EEE3" text-anchor="start">Context</text>
+<circle cx="614" cy="327" r="3.5" fill="#F2B34C"/>
+<text x="628" y="332" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" font-weight="400" fill="#F3EEE3" text-anchor="start">Decision</text>
+<circle cx="614" cy="355" r="3.5" fill="#F2B34C"/>
+<text x="628" y="360" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" font-weight="400" fill="#F3EEE3" text-anchor="start">Alternatives tried</text>
+<circle cx="614" cy="383" r="3.5" fill="#F2B34C"/>
+<text x="628" y="388" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" font-weight="400" fill="#F3EEE3" text-anchor="start">Consequences</text>
+<circle cx="614" cy="411" r="3.5" fill="#5CC8B8"/>
+<text x="628" y="416" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" font-weight="400" fill="#5CC8B8" text-anchor="start">Evidence links</text>
+<circle cx="614" cy="439" r="3.5" fill="#F2B34C"/>
+<text x="628" y="444" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" font-weight="400" fill="#F3EEE3" text-anchor="start">Confidence</text>
+<circle cx="893" cy="56" r="13" fill="#F2B34C"/><text x="893" y="61.5" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#12131A" text-anchor="middle">4</text><text x="916" y="63" font-family="Georgia, 'Times New Roman', serif" font-size="23" font-weight="700" fill="#F3EEE3" text-anchor="start">Outputs</text>
+<rect x="880" y="96" width="190" height="112" rx="10" fill="#1B1D28" stroke="#5CC8B8" stroke-width="1.5"/>
+<text x="898" y="150" font-family="ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace" font-size="15" font-weight="600" fill="#F3EEE3" text-anchor="start">decisions/*.md</text>
+<text x="898" y="174" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#A3A5B8" text-anchor="start">ADR files in your repo</text>
+<rect x="880" y="230" width="190" height="112" rx="10" fill="#1B1D28" stroke="#5CC8B8" stroke-width="1.5"/>
+<text x="898" y="284" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="19" font-weight="600" fill="#F3EEE3" text-anchor="start">Timeline viewer</text>
+<text x="898" y="308" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#A3A5B8" text-anchor="start">one static HTML file</text>
+<rect x="880" y="364" width="190" height="112" rx="10" fill="#1B1D28" stroke="#5CC8B8" stroke-width="1.5"/>
+<text x="898" y="418" font-family="ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace" font-size="15" font-weight="600" fill="#F3EEE3" text-anchor="start">why(file | symbol)</text>
+<text x="898" y="442" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="400" fill="#A3A5B8" text-anchor="start">MCP tool for agents</text>
+<path d="M 248 286 H 283" stroke="#F2B34C" stroke-width="2.5" fill="none"/><path d="M 281 279 L 292 286 L 281 293 Z" fill="#F2B34C"/>
+<path d="M 538 286 H 573" stroke="#F2B34C" stroke-width="2.5" fill="none"/><path d="M 571 279 L 582 286 L 571 293 Z" fill="#F2B34C"/>
+<path d="M 828 286 H 863" stroke="#F2B34C" stroke-width="2.5" fill="none"/><path d="M 861 279 L 872 286 L 861 293 Z" fill="#F2B34C"/>
+</svg>
