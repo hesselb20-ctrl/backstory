@@ -1,0 +1,41 @@
+{
+  "name": "backstory",
+  "version": "0.1.0",
+  "description": "Recover the why behind a codebase: mine git history, PRs, issues and comments into a browsable decision log.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "backstory": "dist/cli/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p .",
+    "prepare": "tsc -p .",
+    "test": "node --test dist/cli/*.test.js",
+    "diagram": "node scripts/make-diagram.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.0"
+  },
+  "keywords": [
+    "git",
+    "adr",
+    "documentation",
+    "mcp",
+    "claude",
+    "decision-log"
+  ]
+}
