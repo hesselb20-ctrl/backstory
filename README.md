@@ -1,207 +1,238 @@
-<p align="center">
-  <img src="media/hero.png" alt="Backstory: recover the why behind your code. A line of code opens into three chapters: the swap, the revert, the workaround." width="830">
-</p>
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/hero-mobile-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/hero-mobile-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-dark.svg">
+  <img src=".github/assets/hero-light.svg" width="100%" alt="Backstory. Rebuilds the decisions behind code from its git history. Prototype, version 0.1.0, not on npm.">
+</picture>
 
-# backstory
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-01-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-01-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-01-dark.svg">
+  <img src=".github/assets/rule-01-light.svg" width="100%" alt="01 What it is">
+</picture>
 
-**Recover the why behind your code.**
+Backstory reads a repository's git history and finds the commits that look like decisions: a
+dependency swapped, a change reverted, a large refactor, a config change, a comment that says
+"workaround". It writes each one up as an architecture decision record (ADR) with links to the
+commits and pull requests behind it. You can browse the records in a timeline, ask for them from the
+terminal, or let a coding agent ask through MCP.
 
-Backstory mines git history, PR descriptions, issues, code comments and reverts to rebuild the decisions behind the code you have today: why this dependency, why this workaround, what was tried and rolled back. The output is a decision log you can browse, with every entry linked to the commits and PRs behind it.
+It is a prototype, version 0.1.0. It has been run with a model on one real repository, chalk. It has
+no CI and is not published on npm.
 
-<p align="center">
-  <a href="media/tutorial.mp4"><img src="media/preview.gif" alt="Six-second preview: a confusing line of code, its history as chapters, and a decision card forming" width="720"></a>
-  <br>
-  <sub>Preview of the 75-second tutorial. Full video: <a href="media/tutorial.mp4">media/tutorial.mp4</a></sub>
-</p>
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-02-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-02-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-02-dark.svg">
+  <img src=".github/assets/rule-02-light.svg" width="100%" alt="02 Why it exists">
+</picture>
 
-## Why
+**The problem.** `git blame` tells you who wrote a line and when. It does not tell you why. The reason
+sits in a PR description, a revert two commits later, or an issue someone linked once. When the
+people who knew leave, a newcomer or a coding agent removes the "dead" workaround and brings back the
+bug it was there to stop.
 
-Every codebase has a line like `await sleep(250); // do not remove`. `git blame` gives you a name and a date. The reason is somewhere else: a PR description, a revert two commits later, an issue someone linked once.
+**What was missing.** The reasons are often still in the history, but nobody collects them. Backstory
+collects them into one decision log per repository, and only states a reason when the evidence
+states it. Otherwise the record says "the history does not say why".
 
-People leave, and that context leaves with them. Then a newcomer, or a coding agent, cleans up the "dead" line and brings back the outage it was written to stop.
+**Who it is for.** Maintainers handing over a codebase, people joining one, and coding agents. The
+MCP tool tells an agent to call it before refactoring, removing a workaround, swapping a dependency
+or changing config (`mcp/server.ts`).
 
-The reasons are usually still in the repository's history. Backstory reads it and writes them down as architecture decision records (ADRs), so the next person or agent can check before changing something.
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-03-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-03-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-03-dark.svg">
+  <img src=".github/assets/rule-03-light.svg" width="100%" alt="03 How it works">
+</picture>
 
-## How it works
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/flow-mobile-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/flow-mobile-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/flow-dark.svg">
+  <img src=".github/assets/flow-light.svg" width="100%" alt="Data flow. Read the history: git log gives every commit with per-file line counts, comments in the current code that give a reason are traced to their commit with git blame, and both become signals. Find decisions: linked signals are grouped into candidates, ranked by score, and PR and issue text is attached from GitHub within a request budget. Write the record: a model writes one ADR per candidate, or an evidence-only record without a model; the result is saved as numbered markdown files, index.json and a timeline viewer, and the why command and MCP tool look records up without a model call.">
+</picture>
 
-<p align="center">
-  <img src="media/how-it-works.svg" alt="Sources (git log, pull requests, issues, code comments) become signals (dependency swaps, reverts, large refactors, config changes, because/workaround/hack comments). Signals are grouped into decisions, Claude writes each as an ADR, and the outputs are markdown files, a timeline viewer and an MCP tool." width="830">
-</p>
+1. **Read.** `git log --numstat -M` gives every commit, oldest first, with per-file line counts and
+   renames resolved. `--since` and `--max-commits` limit how much is read.
+2. **Comments.** `git grep` finds comments in the current tree with words like "because",
+   "workaround", "do not remove" or "see #123". `git blame` traces each one to the commit that wrote it.
+3. **Signals.** Each commit is checked for dependency changes in a manifest (`package.json` is parsed;
+   other manifests get a line diff), reverts, large or structural changes, config and package-contract
+   changes (`engines`, `type`, `exports` and others), and reason words in the message. Lock files,
+   build output and `vendor/` folders are ignored.
+4. **Group and rank.** Signals on linked commits become one candidate: a revert with the commit it
+   undoes, commits merged through one PR, a dependency added and removed again within 120 days. A
+   candidate gets a score from its signal weights. Weak ones are dropped, and the strongest 25 are kept
+   by default (`--max`).
+5. **GitHub text.** For a GitHub remote, PR and issue descriptions referenced by those commits are
+   fetched with `gh api`, or the REST API (with `GITHUB_TOKEN` if set) when `gh` is not installed. At
+   most 60 requests by default (`--github-budget`), cached in the system temp folder.
+6. **Draft.** One model call per candidate writes the record: context, decision, alternatives tried,
+   consequences, status and a confidence level. The prompt allows a reason only when the evidence
+   gives one, and lets the model skip a candidate that is not a decision. With `--provider none` the
+   record lists what the detector found and is marked low confidence.
+7. **Write.** The output folder gets `NNNN-title.md` files, `index.json`, and `index.html`, a viewer in
+   one file with the data inside it. A re-scan deletes the existing `NNNN-*.md` files in that folder
+   before writing new ones, and the numbers can change.
+8. **Ask.** `backstory why <target>` and the MCP tool `why` match a file, folder or symbol against
+   `index.json`. No model is called.
 
-1. **Sources.** `git log` with per-file line counts, the PR and issue text behind those commits (through `gh api`), and comments in the current tree that explain themselves, traced to their commit with `git blame`.
-2. **Signals.** Dependencies added, removed or swapped in a manifest. Reverts, matched to the commit they undo. Large or structural changes. Config and package-contract changes (`engines`, `type`, `exports`). Commit messages and comments that say "because", "workaround", "hack", "for now", "do not remove".
-3. **Decisions.** Signals on linked commits are grouped into one candidate: a revert with the commit it reverted, commits merged through the same PR, a dependency that was added and then removed again within a few months. Candidates are ranked and the strongest are written up.
-4. **Records.** Claude (`claude-fable-5-2` by default) writes each candidate as an ADR: context, decision, alternatives tried, consequences, evidence links and a confidence level. It is told to state a reason only when the evidence states it, and to write "the history does not say why" otherwise. It can also skip a candidate that is not a decision.
+<img src="media/timeline.png" width="100%" alt="The Backstory viewer on the chalk example: search and file-path filter on top, area and signal filters, a timeline of 28 decisions on the left, and ADR 0022 open on the right with its status, confidence and context.">
 
-## Install
+<sub>A screenshot of the real viewer, `examples/chalk/decisions/index.html`, taken with
+`scripts/screenshot.mjs`. The script adds web fonts for the capture; the file itself names fonts but
+does not download them.</sub>
 
-Requires Node.js 22 or later and git.
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-04-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-04-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-04-dark.svg">
+  <img src=".github/assets/rule-04-light.svg" width="100%" alt="04 Capabilities">
+</picture>
 
-```bash
-npm install -g github:hesselb20-ctrl/backstory
-```
+What the code does today.
 
-Or run it without installing:
+- **History reader.** Commits, per-file line counts, renames, patch excerpts. `cli/git.ts`
+- **Signal detection.** Dependency, revert, refactor, config, message and comment signals. `cli/signals.ts`
+- **Grouping and ranking.** Union of linked commits, capped at 6 commits per candidate. `cli/group.ts`
+- **GitHub enrichment.** PR and issue text through `gh api` or REST, with a request budget and a
+  rate-limit stop. `cli/github.ts`
+- **Record writer.** Three providers: the Claude API (`@anthropic-ai/sdk`), a signed-in Claude Code
+  run as `claude -p` with tools off, or `none`. The default picks the API when `ANTHROPIC_API_KEY` is
+  set, then Claude Code, then `none`. Default model id `claude-fable-5-2`. `cli/writer.ts`
+- **ADR output.** Markdown with YAML front matter and an evidence list. `cli/adr.ts`
+- **Viewer.** One HTML file with search, a file filter, area and signal filters and a timeline. `cli/viewer.ts`
+- **Lookup.** `why` for paths and symbols, with an explicit "nothing recorded" answer. `cli/why.ts`
+- **MCP server.** stdio, one read-only tool `why(target, limit)`, reads `index.json` on every call. `mcp/server.ts`
+- **Example.** 28 records from a model run on [chalk/chalk](https://github.com/chalk/chalk). `examples/chalk`
 
-```bash
-npx github:hesselb20-ctrl/backstory scan .
-```
+Known limits:
 
-Backstory is not on npm (the name `backstory` there belongs to an unrelated package), so install it from GitHub as shown.
+- It can only find what was written down. A decision made in a meeting and committed as "fix" becomes
+  a low-confidence record of what changed.
+- Records are written by a model. They link to their evidence and carry a confidence level, but they
+  can be wrong.
+- Detection is heuristic: thresholds and English keyword lists. Quiet decisions can be missed.
+- PR and issue text comes from GitHub only. Without `gh` or a token GitHub allows 60 anonymous
+  requests an hour. The chalk example hit that limit, so only 2 PR descriptions were read
+  ([`examples/chalk/README.md`](examples/chalk/README.md)).
+- A folder lookup matches only files a record lists. Vendored and build folders are never listed, so
+  `why source/vendor` on the chalk example returns weak same-folder matches, not ADR 0023.
+- ADR numbers follow date order within one scan and are not stable across scans.
+- With a model provider, every candidate costs one call. `--dry-run` shows the candidates first.
 
-To write the records, Backstory needs Claude through one of:
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-05-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-05-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-05-dark.svg">
+  <img src=".github/assets/rule-05-light.svg" width="100%" alt="05 Quick start">
+</picture>
 
-- `ANTHROPIC_API_KEY` in the environment (uses the Claude API), or
-- a signed-in [Claude Code](https://claude.com/claude-code) install on your PATH (uses `claude -p` with tools switched off).
-
-With neither, `scan` still runs and writes evidence-only records marked as low confidence.
-
-PR and issue text is fetched with the [GitHub CLI](https://cli.github.com) when it is installed. Without it, Backstory falls back to the GitHub REST API, using `GITHUB_TOKEN` if set.
-
-## Quickstart
-
-```bash
-backstory scan path/to/repo
-```
-
-```text
-Reading history of chalk/chalk
-  381 commits, 115 signals (45 config, 17 refactor, 29 dependency, 17 message, 2 revert, 5 comment)
-  30 decision candidates
-Writing records with claude-fable-5-2 (Claude Code CLI)
-   3/30 Use supports-color instead of has-color for terminal color detection
-   1/30 skipped: The commit only adds logo artwork ...
-  ...
-28 decisions written to path/to/repo/decisions
-```
-
-This writes to `<repo>/decisions`:
-
-| File | What it is |
-| --- | --- |
-| `0001-….md` to `00NN-….md` | One ADR per decision, with YAML front matter |
-| `index.json` | The same records as data, read by the viewer and the MCP server |
-| `index.html` | The viewer: one self-contained file, no server, no network requests |
-
-Open `decisions/index.html` in a browser, or ask from the terminal:
-
-```bash
-backstory why source/vendor
-```
-
-Useful options:
-
-| Option | Effect |
-| --- | --- |
-| `--dry-run` | List the candidates and stop before any model call |
-| `--max <n>` | Most candidates to write up (default 25) |
-| `--since <date>` / `--max-commits <n>` | Limit how much history is read |
-| `--out <dir>` | Write the log somewhere else |
-| `--no-github` | Skip PR and issue text |
-| `--provider api\|claude-cli\|none` | Choose how records are written |
-| `--model <id>` | Use another Claude model |
-
-Run `backstory --help` for the full list.
-
-## Example output
-
-[`examples/chalk`](examples/chalk) holds the result of running Backstory on [chalk/chalk](https://github.com/chalk/chalk) (MIT): 381 commits in, 28 decisions out. Start with [the index](examples/chalk/README.md), or download [`index.html`](examples/chalk/decisions/index.html) and open it.
-
-<p align="center">
-  <img src="media/timeline.png" alt="The Backstory viewer on chalk: filters by area and signal on top, a timeline of decisions on the left, the selected ADR on the right" width="830">
-</p>
-
-One record, as the viewer shows it:
-
-<p align="center">
-  <img src="media/decision-card.png" alt="ADR 0023: Vendor ansi-styles and supports-color into source/vendor, with context, decision, alternatives tried, consequences and the commit as evidence" width="620">
-</p>
-
-The same record as markdown: [0023-vendor-ansi-styles-and-supports-color…](examples/chalk/decisions/0023-vendor-ansi-styles-and-supports-color-into-source-vendor-and.md). A record built from a revert: [0010-revert-the-lint-fix…](examples/chalk/decisions/0010-revert-the-lint-fix-that-replaced-x-escapes-with-u-escapes-i.md).
-
-Note what the records do not claim. chalk's commit messages are often two words long, so many records say "the history does not say why" and carry low or medium confidence. That is the intended behaviour: Backstory reports what the history supports.
-
-## MCP setup
-
-Backstory ships an MCP server with one tool, `why(target)`, so a coding agent can ask before it changes code. `target` is a file path, a folder, or a symbol name.
-
-Claude Code:
-
-```bash
-claude mcp add backstory -- npx -y github:hesselb20-ctrl/backstory mcp --decisions ./decisions
-```
-
-Any MCP client (`.mcp.json`, Claude Desktop, Cursor and others):
-
-```json
-{
-  "mcpServers": {
-    "backstory": {
-      "command": "npx",
-      "args": ["-y", "github:hesselb20-ctrl/backstory", "mcp", "--decisions", "./decisions"]
-    }
-  }
-}
-```
-
-The server reads `decisions/index.json` on every call, so a fresh scan is picked up without a restart. Paths match records that touch that file or folder. Symbols match records that discuss them, and records that touch the files where the symbol occurs (`--repo <dir>` sets the checkout to search, default `.`).
-
-To make an agent use it, add a line to your `CLAUDE.md` or `AGENTS.md`:
-
-```text
-Before refactoring, deleting a workaround, swapping a dependency or changing config,
-call backstory's why() on the files you will touch and respect what it returns.
-```
-
-An empty answer means no decision was recorded for that target. It does not mean the change is safe, and the tool says so in its reply.
-
-## Tutorial video
-
-The tutorial in [`media/tutorial.mp4`](media/tutorial.mp4) (75 s, 1920x1080, 30 fps, no audio) is code: a [Remotion](https://www.remotion.dev) project in [`tutorial/`](tutorial). The banner above is a still from the same project, and the viewer, the diagram and the video share one palette and type scale.
+Requires Node.js 22 or newer and git. Commands below were run on Windows 11 with Node 26.13.0,
+npm 11.20.0 and git 2.53.0.
 
 ```bash
-cd tutorial
-npm install
-npm run studio   # preview and edit
-npm run render   # writes tutorial/out/tutorial.mp4
-npm run hero     # writes media/hero.png
-```
-
-The other images are also made in code: `npm run diagram` writes the SVG, and `node scripts/screenshot.mjs` takes the two viewer screenshots with a local Chrome or Edge.
-
-## Limitations
-
-- **It reads history; it cannot recover what was never written.** A decision made in a meeting and committed as "fix" comes out as a low-confidence record of what changed.
-- **Records are written by a model.** They are tied to evidence and carry a confidence level, but they can still be wrong. Treat them as a well-sourced draft and follow the links.
-- **Detection is heuristic.** Thresholds and keyword lists decide what counts as a signal. Quiet but important decisions can be missed, and routine changes can be picked up (the model skips some of those).
-- **Keywords are English.** Comments and commit messages in other languages are only caught by the structural signals.
-- **GitHub only for PR and issue text.** GitLab, Bitbucket and others still get the git-based signals. Without `gh` or a token, GitHub allows 60 anonymous requests an hour per address. The chalk example was scanned that way and hit the limit, so only two PR descriptions were read; the other PRs are linked but their text was not used.
-- **Squash merges hide intermediate steps.** What was tried inside a PR and dropped before merge is invisible unless the PR description mentions it.
-- **Manifest parsing is deepest for `package.json`.** Other manifests (`requirements.txt`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `Gemfile`, `pom.xml`, Gradle, Composer) use a simpler line diff.
-- **Model calls cost money or quota.** One call per candidate. Use `--dry-run` and `--max` to see and limit that first.
-- **Re-scans renumber.** IDs follow date order within one scan, so an ADR number is not stable across scans yet.
-
-## Roadmap
-
-- Incremental scans that keep ADR numbers stable and only write up new history
-- GitLab and Bitbucket enrichment
-- Review comments and linked discussions as evidence, not only PR descriptions
-- Symbol-level blame, so `why(symbol)` can follow a function across renames
-- A `backstory check` command for CI that flags a diff touching code with a recorded decision
-- Structural parsing for more manifests
-- A published npm package under a scoped name
-
-## Development
-
-```bash
-npm install
+git clone https://github.com/hesselb20-ctrl/backstory.git
+cd backstory
+npm ci
 npm run build
-npm test
-node dist/cli/index.js scan path/to/repo --dry-run
 ```
 
-The scanner and viewer are in [`cli/`](cli), the MCP server in [`mcp/`](mcp), the video in [`tutorial/`](tutorial).
+Run the tests. Expect `pass 9`, `fail 0`.
 
-## License
+```bash
+npm test
+```
 
-[MIT](LICENSE). The example records in `examples/chalk` describe [chalk/chalk](https://github.com/chalk/chalk), which is MIT licensed by Sindre Sorhus; no chalk source code is included beyond short quoted fragments in the records.
+List the decision candidates in this repository without calling a model or GitHub. On this
+repository's 8 commits that printed `14 signals` and `5 decision candidates`.
+
+```bash
+node dist/cli/index.js scan . --dry-run --no-github
+```
+
+Write an evidence-only log, with no model. Point `--out` at a folder of its own: a scan deletes
+existing `NNNN-*.md` files there. This wrote 5 records, `index.json` and `index.html`.
+
+```bash
+node dist/cli/index.js scan . --provider none --no-github --out ../backstory-log
+```
+
+Ask the committed chalk log about a file. This printed `5 decisions behind "source/index.js"`, led by
+ADR 0025, matched through a comment at `source/index.js:247`.
+
+```bash
+node dist/cli/index.js why source/index.js --decisions examples/chalk/decisions
+```
+
+`node dist/cli/index.js mcp --decisions examples/chalk/decisions` starts the MCP server on stdio. Here
+an MCP client listed one tool, `why`, marked read-only, and got the same records back.
+
+Not run here: a scan with a model (`--provider api` needs `ANTHROPIC_API_KEY`; `claude-cli` needs a
+signed-in Claude Code), GitHub enrichment, `npm install -g github:hesselb20-ctrl/backstory`, and
+registering the server in an MCP client such as Claude Code. Run `node dist/cli/index.js --help` for
+every option.
+
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-06-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-06-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-06-dark.svg">
+  <img src=".github/assets/rule-06-light.svg" width="100%" alt="06 Stack, status, roadmap">
+</picture>
+
+**Stack**
+
+| Layer | Built with |
+|---|---|
+| CLI | TypeScript, Node.js 22+, `node:util` parseArgs, git |
+| Records | `@anthropic-ai/sdk`, or the Claude Code CLI |
+| GitHub text | `gh` CLI or the REST API via `fetch` |
+| MCP server | `@modelcontextprotocol/sdk`, `zod`, stdio |
+| Viewer | One HTML file, inline CSS and JavaScript |
+| Tests | `node:test`, 9 unit tests |
+| Tutorial video | Remotion, separate project in [`tutorial/`](tutorial) |
+
+**Status**
+
+| Part | State |
+|---|---|
+| Scan, signals, grouping | Built. Tested by unit tests and the runs above. |
+| Model-written records | Run once, on chalk (381 commits, 28 records), per [`examples/chalk/README.md`](examples/chalk/README.md). Not run here. |
+| GitHub enrichment | Used in the chalk run, cut short by the rate limit. Not run here. |
+| `why` and MCP server | Run here against the chalk log. Not tested inside a real agent session. |
+| Distribution | Not on npm. The npm name `backstory` belongs to another package. |
+| CI | None. |
+
+**Roadmap.** As listed in the repository's previous README:
+
+1. Incremental scans that keep ADR numbers stable and only write up new history.
+2. GitLab and Bitbucket enrichment.
+3. Review comments and linked discussions as evidence, not only PR descriptions.
+4. Symbol-level blame, so `why(symbol)` can follow a function across renames.
+5. A `backstory check` command for CI that flags a diff touching code with a recorded decision.
+6. Structural parsing for more manifests.
+7. A published npm package under a scoped name.
+
+**Documents**
+
+| File | Contents |
+|---|---|
+| [`examples/chalk/README.md`](examples/chalk/README.md) | The chalk run: command, counts, table of all 28 records |
+| [`examples/chalk/decisions/index.html`](examples/chalk/decisions/index.html) | The viewer for that run; download and open it |
+| [`media/tutorial.mp4`](media/tutorial.mp4?raw=true) | 75-second tutorial video, no sound, 1920x1080, 3.3 MB download |
+
+<picture>
+  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-07-dark.svg">
+  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-07-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-07-dark.svg">
+  <img src=".github/assets/rule-07-light.svg" width="100%" alt="07 License">
+</picture>
+
+MIT. See [`LICENSE`](LICENSE).
+
+The records in `examples/chalk` describe [chalk/chalk](https://github.com/chalk/chalk), which is MIT
+licensed by Sindre Sorhus. No chalk source code is included beyond short quoted fragments in the
+records.
