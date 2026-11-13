@@ -80,6 +80,15 @@ or changing config (`mcp/server.ts`).
 8. **Ask.** `backstory why <target>` and the MCP tool `why` match a file, folder or symbol against
    `index.json`. No model is called.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/scene-dark.gif">
+  <img src=".github/assets/scene-light.gif" width="100%" alt="A 3D timeline of the 28 decision records from the chalk example, one thin pillar per record at its date from 2014 to 2026, in rows by confidence with 20 medium, 8 low and no high, pillar height set by the number of linked evidence items, the one reverted record drawn as an outline, while a read head sweeps left to right and brightens each pillar it passes.">
+</picture>
+
+<sub>The 28 records of the chalk example run, from `examples/chalk/decisions/index.json`: date, confidence,
+status and evidence count are read from that file. The records were written by a model; the sweep only
+illustrates reading the history in order.</sub>
+
 <img src="media/timeline.png" width="100%" alt="The Backstory viewer on the chalk example: search and file-path filter on top, area and signal filters, a timeline of 28 decisions on the left, and ADR 0022 open on the right with its status, confidence and context.">
 
 <sub>A screenshot of the real viewer, `examples/chalk/decisions/index.html`, taken with
