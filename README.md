@@ -1,9 +1,10 @@
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/hero-mobile-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/hero-mobile-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-dark.svg">
-  <img src=".github/assets/hero-light.svg" width="100%" alt="Backstory. Rebuilds the decisions behind code from its git history. Prototype, version 0.1.0, not on npm.">
-</picture>
+# Backstory
+
+Rebuilds the decisions behind code from its git history.
+
+<img src=".github/assets/figure.webp" width="100%" alt="3D chart. 381 commits shown as a grey field narrow to 28 decision records, drawn as columns at their dates from 2014 to 2026 and banded by the kind of evidence behind them. The records then sort into confidence lanes: 20 medium, 8 low, none high.">
+
+<sub>From the example run on the chalk repository in `examples/chalk/decisions/index.json`. One run; the records were written by a model, and only 2 pull-request descriptions were read because of a rate limit.</sub>
 
 <picture>
   <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-01-dark.svg">
@@ -48,13 +49,6 @@ or changing config (`mcp/server.ts`).
   <img src=".github/assets/rule-03-light.svg" width="100%" alt="03 How it works">
 </picture>
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/flow-mobile-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/flow-mobile-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/flow-dark.svg">
-  <img src=".github/assets/flow-light.svg" width="100%" alt="Data flow. Read the history: git log gives every commit with per-file line counts, comments in the current code that give a reason are traced to their commit with git blame, and both become signals. Find decisions: linked signals are grouped into candidates, ranked by score, and PR and issue text is attached from GitHub within a request budget. Write the record: a model writes one ADR per candidate, or an evidence-only record without a model; the result is saved as numbered markdown files, index.json and a timeline viewer, and the why command and MCP tool look records up without a model call.">
-</picture>
-
 1. **Read.** `git log --numstat -M` gives every commit, oldest first, with per-file line counts and
    renames resolved. `--since` and `--max-commits` limit how much is read.
 2. **Comments.** `git grep` finds comments in the current tree with words like "because",
@@ -79,21 +73,6 @@ or changing config (`mcp/server.ts`).
    before writing new ones, and the numbers can change.
 8. **Ask.** `backstory why <target>` and the MCP tool `why` match a file, folder or symbol against
    `index.json`. No model is called.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/scene-dark.gif">
-  <img src=".github/assets/scene-light.gif" width="100%" alt="A 3D timeline of the 28 decision records from the chalk example, one thin pillar per record at its date from 2014 to 2026, in rows by confidence with 20 medium, 8 low and no high, pillar height set by the number of linked evidence items, the one reverted record drawn as an outline, while a read head sweeps left to right and brightens each pillar it passes.">
-</picture>
-
-<sub>The 28 records of the chalk example run, from `examples/chalk/decisions/index.json`: date, confidence,
-status and evidence count are read from that file. The records were written by a model; the sweep only
-illustrates reading the history in order.</sub>
-
-<img src="media/timeline.png" width="100%" alt="The Backstory viewer on the chalk example: search and file-path filter on top, area and signal filters, a timeline of 28 decisions on the left, and ADR 0022 open on the right with its status, confidence and context.">
-
-<sub>A screenshot of the real viewer, `examples/chalk/decisions/index.html`, taken with
-`scripts/screenshot.mjs`. The script adds web fonts for the capture; the file itself names fonts but
-does not download them.</sub>
 
 <picture>
   <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-04-dark.svg">
