@@ -6,12 +6,7 @@ Rebuilds the decisions behind code from its git history.
 
 <sub>From the example run on the chalk repository in `examples/chalk/decisions/index.json`. One run; the records were written by a model, and only 2 pull-request descriptions were read because of a rate limit.</sub>
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-01-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-01-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-01-dark.svg">
-  <img src=".github/assets/rule-01-light.svg" width="100%" alt="01 What it is">
-</picture>
+## What it is
 
 Backstory reads a repository's git history and finds the commits that look like decisions: a
 dependency swapped, a change reverted, a large refactor, a config change, a comment that says
@@ -22,12 +17,7 @@ terminal, or let a coding agent ask through MCP.
 It is a prototype, version 0.1.0. It has been run with a model on one real repository, chalk. It has
 no CI and is not published on npm.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-02-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-02-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-02-dark.svg">
-  <img src=".github/assets/rule-02-light.svg" width="100%" alt="02 Why it exists">
-</picture>
+## Why it exists
 
 **The problem.** `git blame` tells you who wrote a line and when. It does not tell you why. The reason
 sits in a PR description, a revert two commits later, or an issue someone linked once. When the
@@ -42,12 +32,7 @@ states it. Otherwise the record says "the history does not say why".
 MCP tool tells an agent to call it before refactoring, removing a workaround, swapping a dependency
 or changing config (`mcp/server.ts`).
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-03-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-03-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-03-dark.svg">
-  <img src=".github/assets/rule-03-light.svg" width="100%" alt="03 How it works">
-</picture>
+## How it works
 
 1. **Read.** `git log --numstat -M` gives every commit, oldest first, with per-file line counts and
    renames resolved. `--since` and `--max-commits` limit how much is read.
@@ -74,12 +59,7 @@ or changing config (`mcp/server.ts`).
 8. **Ask.** `backstory why <target>` and the MCP tool `why` match a file, folder or symbol against
    `index.json`. No model is called.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-04-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-04-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-04-dark.svg">
-  <img src=".github/assets/rule-04-light.svg" width="100%" alt="04 Capabilities">
-</picture>
+## Capabilities
 
 What the code does today.
 
@@ -112,12 +92,7 @@ Known limits:
 - ADR numbers follow date order within one scan and are not stable across scans.
 - With a model provider, every candidate costs one call. `--dry-run` shows the candidates first.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-05-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-05-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-05-dark.svg">
-  <img src=".github/assets/rule-05-light.svg" width="100%" alt="05 Quick start">
-</picture>
+## Quick start
 
 Requires Node.js 22 or newer and git. Commands below were run on Windows 11 with Node 26.13.0,
 npm 11.20.0 and git 2.53.0.
@@ -164,12 +139,7 @@ signed-in Claude Code), GitHub enrichment, `npm install -g github:hesselb20-ctrl
 registering the server in an MCP client such as Claude Code. Run `node dist/cli/index.js --help` for
 every option.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-06-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-06-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-06-dark.svg">
-  <img src=".github/assets/rule-06-light.svg" width="100%" alt="06 Stack, status, roadmap">
-</picture>
+## Stack, status, roadmap
 
 **Stack**
 
@@ -212,12 +182,7 @@ every option.
 | [`examples/chalk/decisions/index.html`](examples/chalk/decisions/index.html) | The viewer for that run; download and open it |
 | [`media/tutorial.mp4`](media/tutorial.mp4?raw=true) | 75-second tutorial video, no sound, 1920x1080, 3.3 MB download |
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-07-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-07-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-07-dark.svg">
-  <img src=".github/assets/rule-07-light.svg" width="100%" alt="07 License">
-</picture>
+## License
 
 MIT. See [`LICENSE`](LICENSE).
 
