@@ -59,6 +59,10 @@ or changing config (`mcp/server.ts`).
 8. **Ask.** `backstory why <target>` and the MCP tool `why` match a file, folder or symbol against
    `index.json`. No model is called.
 
+<img src=".github/assets/figure-how.webp" width="100%" alt="Four evidence cards link to one commit; their weight blocks stack to a score of 4 on the cut-off line, with unearned bonuses drawn as dashed outlines.">
+
+<sub>Record 0025 from one chalk run. Scores from <code>cli/signals.ts</code> and <code>cli/group.ts</code>; the record text is model-written.</sub>
+
 ## Capabilities
 
 What the code does today.
@@ -91,6 +95,10 @@ Known limits:
   `why source/vendor` on the chalk example returns weak same-folder matches, not ADR 0023.
 - ADR numbers follow date order within one scan and are not stable across scans.
 - With a model provider, every candidate costs one call. `--dry-run` shows the candidates first.
+
+<img src=".github/assets/figure-more.webp" width="100%" alt="Ranked score bars for four why(file) queries with the top five marked; the last two queries, a folder and a vendored file, turn coral as wrong matches.">
+
+<sub>The why() lookup run on the 28 chalk example records, no model call. The wrong matches are limits of the prototype.</sub>
 
 ## Quick start
 
